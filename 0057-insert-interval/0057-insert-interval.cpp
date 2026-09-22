@@ -4,30 +4,20 @@ public:
         int n=intervals.size();
         vector<vector<int>> res;
         int i=0;
-        while(i<n && intervals[i][0]<=newInterval[0])
-        {
-            res.push_back({intervals[i][0],intervals[i][1]});
+        
+        while(i<n && intervals[i][1]<newInterval[0]) {
+            res.push_back(intervals[i]);
             i++;
         }
 
-        int start_merge=newInterval[0];
-        int end_merge=newInterval[1];
-
-        if(res.size()>0 && res.back()[1]>=start_merge)
+        while(i<n && intervals[i][0]<=newInterval[1])
         {
-            start_merge=min(start_merge,res.back()[0]);
-            end_merge=max(end_merge, res.back()[1]);
-            res.pop_back();
-        }
-
-        while(i<n && intervals[i][0]<=end_merge)
-        {
-            start_merge=start_merge;
-            end_merge=max(end_merge, intervals[i][1]);
+            newInterval[0]=min(intervals[i][0],newInterval[0]);
+            newInterval[1]=max(intervals[i][1],newInterval[1]);
             i++;
         }
 
-        res.push_back({start_merge,end_merge});
+        res.push_back({newInterval[0],newInterval[1]});
 
         while(i<n)
         {
